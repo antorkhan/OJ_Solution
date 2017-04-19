@@ -52,7 +52,7 @@ void ConsTree(int l,int r,int root)
 }
 int main()
 {
-   // read();
+    read();
 
     int t;
     scan(t);
