@@ -1,39 +1,41 @@
 #include<bits/stdc++.h>
 using namespace std;
 string CACHE[5010];
-string add_string(string s1, string s2){
-    int len_dif = s1.length()- s2.length();
+string findSum(string str1, string str2)
+{
+    if (str1.length() > str2.length())
+        swap(str1, str2);
+    string str = "";
 
-    string str_padding = "";
-    for(int i =0; i< abs(len_dif); i++){
-        str_padding += '0';
-    }
-    if(len_dif > 0){
-        s2 = str_padding + s2;
-    }
-    else{
-        s1 = str_padding + s1;
-    }
+    int n1 = str1.length(), n2 = str2.length();
+
+    reverse(str1.begin(), str1.end());
+    reverse(str2.begin(), str2.end());
+
     int carry = 0;
-    string ret = "";
-
-    for(int i=s1.length()-1; i>=0; i--){
-        int d1 = s1[i] - '0';
-        int d2 = s2[i] - '0';
-        ret += (char)((d1+d2+carry)%10 + '0');
-        carry = (int)(d1+d2+carry)/10;
+    for (int i=0; i<n1; i++)
+    {
+        int sum = ((str1[i]-'0')+(str2[i]-'0')+carry);
+        str.push_back(sum%10 + '0');
+        carry = sum/10;
     }
-    if(carry > 0) {
-        ret =  ret + (char)(carry + '0');
+    for (int i=n1; i<n2; i++)
+    {
+        int sum = ((str2[i]-'0')+carry);
+        str.push_back(sum%10 + '0');
+        carry = sum/10;
     }
 
-    reverse(ret.begin(), ret.end());
-    return ret;
+    if (carry)
+        str.push_back(carry+'0');
+    reverse(str.begin(), str.end());
+
+    return str;
 }
 string fib(int n){
     if(CACHE[n][0] != '*') return CACHE[n];
     else{
-        CACHE[n] =add_string(fib(n-1),fib(n-2));
+        CACHE[n] =findSum(fib(n-1),fib(n-2));
         return CACHE[n] ;
     }
 
